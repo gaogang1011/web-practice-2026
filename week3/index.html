@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>고강혁 포트폴리오</title>
+  <meta name="description" content="고강혁의 포트폴리오 페이지입니다." />
+  <meta property="og:url" content="https://gaogang1011.github.io/week3/" />
+  <meta property="og:title" content="고강혁 포트폴리오" />
+  <meta property="og:description" content="고강혁의 포트폴리오 페이지입니다." />
+</head>
+<body>
+  <header>
+    <img src="https://picsum.photos/id/1005/100/100" alt="고강혁 프로필 사진" />
+    <h1>고강혁</h1>
+  </header>
+
+  <main>
+    <h2>소개</h2>
+    <p>안녕하세요, 고강혁입니다. HTML을 공부하고 있습니다.</p>
+
+    <h2>문의하기</h2>
+    <form action="#" method="post">
+      <label for="name">이름</label>
+      <input type="text" id="name" name="name" />
+
+      <label for="email">이메일</label>
+      <input type="email" id="email" name="email" />
+
+      <label for="type">문의 유형</label>
+      <select id="type" name="type">
+        <option value="project">프로젝트</option>
+        <option value="etc">기타</option>
+      </select>
+
+      <label for="message">문의 내용</label>
+      <textarea id="message" name="message" rows="5" cols="30"></textarea>
+
+      <button type="submit">보내기</button>
+    </form>
+  </main>
+
+  <footer>
+    <p>&copy; 2026 고강혁</p>
+    <p><a href="mailto:koganghyuk@naver.com">koganghyuk@naver.com</a></p>
+  </footer>
+</body>
+</html>
