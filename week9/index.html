@@ -104,6 +104,7 @@
       border-radius: 8px;
       background: #fff;
       color: #0f172a;
+      cursor: pointer;
     }
     .combo-list {
       display: none;
@@ -117,8 +118,18 @@
       background: #fff;
       box-shadow: 0 4px 12px rgba(15, 23, 42, 0.12);
     }
-    .combo-list li { padding: 10px 16px; }
-    .combo-list li:hover { background: #e0f2fe; }
+    .combo-list button {
+      width: 100%;
+      padding: 10px 16px;
+      border: none;
+      border-radius: 7px;
+      background: transparent;
+      color: inherit;
+      text-align: left;
+      cursor: pointer;
+    }
+    .combo-list button:hover,
+    .combo-list button:focus-visible { background: #e0f2fe; }
     .combo.open .combo-list { display: block; }
     .combo.open .combo-btn img { transform: rotate(180deg); }
 
@@ -182,19 +193,21 @@
     </div>
 
     <div class="field">
-      <label>관심 분야</label>
+      <label id="interest-label">관심 분야</label>
       <!-- [미션 3] 여기에 div 콤보박스 작성 (.combo > .combo-btn + ul.combo-list) -->
       <!-- 화살표는 arrow.svg 를 img 로 삽입 -->
       <!-- .combo 에 open 클래스를 붙여 열림 상태 확인, 제출 시엔 open 클래스 없는 상태로 제출 -->
       <div class="combo">
-        <div class="combo-btn">
-          선택하세요
+        <div class="combo-btn" role="button" tabindex="0"
+             aria-labelledby="interest-label interest-value"
+             aria-expanded="false" aria-controls="interest-options">
+          <span id="interest-value">선택하세요</span>
           <img src="arrow.svg" alt="" width="20" height="20">
         </div>
-        <ul class="combo-list">
-          <li>HTML</li>
-          <li>CSS</li>
-          <li>JavaScript</li>
+        <ul class="combo-list" id="interest-options">
+          <li><button type="button">HTML</button></li>
+          <li><button type="button">CSS</button></li>
+          <li><button type="button">JavaScript</button></li>
         </ul>
       </div>
     </div>
@@ -220,5 +233,70 @@
       <p>회원가입 전에 이용약관을 확인해 주세요.</p>
     </div>
   </div>
+  <script>
+    const combo = document.querySelector('.combo');
+    const comboButton = combo.querySelector('.combo-btn');
+    const comboList = combo.querySelector('.combo-list');
+    const interestValue = document.querySelector('#interest-value');
+    const container = document.querySelector('.container');
+    const termsButton = document.querySelector('.link-btn');
+    const modal = document.querySelector('.modal');
+    const closeButton = modal.querySelector('.close');
+
+    function setComboOpen(open) {
+      combo.classList.toggle('open', open);
+      comboButton.setAttribute('aria-expanded', String(open));
+    }
+
+    comboButton.addEventListener('click', () => {
+      setComboOpen(!combo.classList.contains('open'));
+    });
+    comboButton.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        comboButton.click();
+      }
+    });
+    comboList.addEventListener('click', (event) => {
+      const option = event.target.closest('button');
+      if (option) {
+        interestValue.textContent = option.textContent;
+        setComboOpen(false);
+        comboButton.focus();
+      }
+    });
+    document.addEventListener('click', (event) => {
+      if (!combo.contains(event.target)) {
+        setComboOpen(false);
+      }
+    });
+
+    function setModalOpen(open) {
+      modal.classList.toggle('open', open);
+      container.inert = open;
+      if (open) {
+        setComboOpen(false);
+        closeButton.focus();
+      } else {
+        termsButton.focus();
+      }
+    }
+
+    termsButton.addEventListener('click', () => setModalOpen(true));
+    closeButton.addEventListener('click', () => setModalOpen(false));
+    modal.addEventListener('click', (event) => {
+      if (event.target === modal) {
+        setModalOpen(false);
+      }
+    });
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && modal.classList.contains('open')) {
+        setModalOpen(false);
+      } else if (event.key === 'Escape' && combo.classList.contains('open')) {
+        setComboOpen(false);
+        comboButton.focus();
+      }
+    });
+  </script>
 </body>
 </html>
